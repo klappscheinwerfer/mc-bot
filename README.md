@@ -6,9 +6,9 @@
 
 * Install pip `apt install python3-pip`
 * Install dependencies `pip install -r requirements.txt`
-* Copy envelope file and edit it `cp .env_sample .env`
+* Copy the config file and edit it `cp config.example.json config.json`
 * Run `python3 bot.py`
 
 ## Notes
 
-The startup script should check if the server is already launched.
+The server start script should check if the server is already launched.

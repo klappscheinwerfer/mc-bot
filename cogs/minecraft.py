@@ -5,22 +5,15 @@ import subprocess
 
 from discord.ext import commands, tasks
 from discord.ext.commands import Context
-from dotenv import load_dotenv
 from mcstatus import JavaServer
 
 
 class Minecraft(commands.Cog, name="minecraft"):
 	def __init__(self, bot):
 		self.bot = bot
-
-		load_dotenv()
-		self.address = os.getenv("ADDRESS")
-		self.port = int(os.getenv("PORT"))
 		self.inactive_time = 0
-		self.time_limit = int(os.getenv("INACTIVE_TIME_LIMIT"))
-		self.server = JavaServer(self.address, self.port)
-		self.start_server_path = os.getenv("START_SERVER_PATH")
-		self.stop_server_path = os.getenv("STOP_SERVER_PATH")
+		self.time_limit = self.bot.config["inactive_time_limit"]
+		self.server = JavaServer(self.bot.config["address"], self.bot.config["port"])
 
 	@commands.Cog.listener()
 	async def on_ready(self):
@@ -35,7 +28,7 @@ class Minecraft(commands.Cog, name="minecraft"):
 				if self.inactive_time > self.time_limit:
 					# Turn server off
 					print("Time limit exceeded, turning server off")
-					subprocess.call(self.stop_server_path)
+					subprocess.call(self.bot.config["stop_server_path"])
 					self.inactive_time = 0
 				else:
 					self.inactive_time += 1
@@ -59,7 +52,7 @@ class Minecraft(commands.Cog, name="minecraft"):
 
 	@commands.hybrid_command(
 		name="start",
-		description="Starts the server",
+		description="Start the server",
 	)
 	async def start_cmd(self, context: Context):
 		if(await self.status_check()):
@@ -67,7 +60,7 @@ class Minecraft(commands.Cog, name="minecraft"):
 		else:
 			# Server is not reachable - can be started
 			try:
-				subprocess.call(self.start_server_path)
+				subprocess.call(self.bot.config["start_server_path"])
 				await context.send("Server started")
 			except Exception as e:
 				await context.send(f"Server start failed: {e}")
@@ -79,7 +72,7 @@ class Minecraft(commands.Cog, name="minecraft"):
 		except (asyncio.TimeoutError, ConnectionRefusedError):
 			return False
 		except Exception as e:
-			print("Something went wrong!")
+			print(f"Exception: {e}")
 			return False
 
 async def setup(bot):

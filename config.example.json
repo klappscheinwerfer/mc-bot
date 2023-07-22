@@ -1,0 +1,13 @@
+{
+	"token": "discord-bot-token",
+	"address": "127.0.0.1",
+	"port": 25565,
+	"inactive_time_limit": 20,
+	"start_server_path": "./startserver.sh",
+	"stop_server_path": "./stopserver.sh",
+	"sync_commands_globally": false,
+	"owners": [
+		123456789,
+		123456790
+	]
+}
