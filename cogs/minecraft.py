@@ -47,38 +47,40 @@ class Minecraft(commands.Cog, name="minecraft"):
 			if self.inactive_time != 0:
 				self.inactive_time = 0
 
-	"""
 	@commands.hybrid_command(
 		name="status",
 		description="Check if the server is online",
 	)
-	async def status(self, context: Context):
-		pass
-	"""
+	async def status_cmd(self, context: Context):
+		if(await self.status_check()):
+			await context.send("Server is online")
+		else:
+			await context.send("Server is offline")
 
 	@commands.hybrid_command(
 		name="start",
 		description="Starts the server",
 	)
-	async def start(self, context: Context):
-		try:
-			lat = await asyncio.wait_for(self.server.async_ping(), timeout=5)
-			embed = discord.Embed(
-				title="mcbot", description="Server is already online", color=0x9C84EF
-			)
-		except (asyncio.TimeoutError, ConnectionRefusedError):
+	async def start_cmd(self, context: Context):
+		if(await self.status_check()):
+			await context.send("Server is already online")
+		else:
 			# Server is not reachable - can be started
 			try:
 				subprocess.call(self.start_server_path)
-				embed = discord.Embed(
-					title="mcbot", description="Server started", color=0x9C84EF
-				)
+				await context.send("Server started")
 			except Exception as e:
-				embed = discord.Embed(
-					title="mcbot", description=f"Server start failed: {e}", color=0x9C84EF
-				)
-		await context.send(embed=embed)
+				await context.send(f"Server start failed: {e}")
 
+	async def status_check(self):
+		try:
+			latency = await asyncio.wait_for(self.server.async_ping(), timeout=5)
+			return True
+		except (asyncio.TimeoutError, ConnectionRefusedError):
+			return False
+		except Exception as e:
+			print("Something went wrong!")
+			return False
 
 async def setup(bot):
 	await bot.add_cog(Minecraft(bot))

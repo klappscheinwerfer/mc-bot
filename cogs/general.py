@@ -13,7 +13,7 @@ class General(commands.Cog, name="general"):
 		name = "help",
 		description = "List all commands the bot has loaded"
 	)
-	async def help(self, context: Context) -> None:
+	async def help_cmd(self, context: Context) -> None:
 		embed = discord.Embed(
 			title="mcbot", description="List of available commands:", color=0x9C84EF
 		)
@@ -36,9 +36,9 @@ class General(commands.Cog, name="general"):
 		name = "info",
 		description = "Show information about the bot"
 	)
-	async def info(self, context: Context) -> None:
+	async def info_cmd(self, context: Context) -> None:
 		embed = discord.Embed(
-			title="mcbot", description="Version 0.1.0", color=0x9C84EF
+			title="mcbot", description="Version 0.2.0", color=0x9C84EF
 		)
 		await context.send(embed=embed)
 
