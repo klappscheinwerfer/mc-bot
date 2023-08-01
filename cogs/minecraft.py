@@ -45,10 +45,12 @@ class Minecraft(commands.Cog, name="minecraft"):
 		description="Check if the server is online",
 	)
 	async def status_cmd(self, context: Context):
+		await context.interaction.response.defer()
 		if(await self.status_check()):
-			await context.send("Server is online")
+			await context.interaction.followup.send("Server is online")
 		else:
-			await context.send("Server is offline")
+			await context.interaction.followup.send("Server is offline")
+			context.send
 
 	@commands.hybrid_command(
 		name="start",

@@ -8,8 +8,5 @@ config.json
 # Virtual environment
 venv/
 
-# Generated data
-data/
-
 # Test files
 test.sh

@@ -40,11 +40,11 @@ class Owner(commands.Cog, name="owner"):
 
 	@commands.hybrid_command(
 		name="unsync",
-		description="Unsynchonizes the slash commands.",
+		description="Unsynchonize the slash commands",
 	)
 	@app_commands.describe(scope="The scope of the sync. Can be `global` or `guild`")
 	@commands.is_owner()
-	async def unsync(self, context: Context, scope: str) -> None:
+	async def unsync_cmd(self, context: Context, scope: str) -> None:
 		if scope == "global":
 			context.bot.tree.clear_commands(guild=None)
 			await context.bot.tree.sync()
