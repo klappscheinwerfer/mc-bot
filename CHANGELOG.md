@@ -1,6 +1,6 @@
 # Changelog
 
-### Version 0.2.0 (23-07-2023)
+### Version 0.2.0 (23-07-2023) - public release
 
 * Added status check command
 * Added owner commands and permission syncing

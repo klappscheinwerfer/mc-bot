@@ -1,6 +1,15 @@
+# Bytecode
 __pycache__/
-test.sh
 
 # Config
 config.json
 .env
+
+# Virtual environment
+venv/
+
+# Generated data
+data/
+
+# Test files
+test.sh
