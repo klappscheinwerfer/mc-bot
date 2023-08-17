@@ -50,22 +50,22 @@ class Minecraft(commands.Cog, name="minecraft"):
 			await context.interaction.followup.send("Server is online")
 		else:
 			await context.interaction.followup.send("Server is offline")
-			context.send
 
 	@commands.hybrid_command(
 		name="start",
 		description="Start the server",
 	)
 	async def start_cmd(self, context: Context):
+		await context.interaction.response.defer()
 		if(await self.status_check()):
 			await context.send("Server is already online")
 		else:
 			# Server is not reachable - can be started
 			try:
 				subprocess.call(self.bot.config["start_server_path"])
-				await context.send("Server started")
+				await context.interaction.followup.send("Server started")
 			except Exception as e:
-				await context.send(f"Server start failed: {e}")
+				await context.interaction.followup.send(f"Server start failed: {e}")
 
 	async def status_check(self):
 		try:
