@@ -1,5 +1,7 @@
 # mc-bot
 
+A Discord bot for interacting with a Minecraft server.
+
 ## Installation
 
 * Update `apt-get update`
