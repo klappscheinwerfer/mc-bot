@@ -1,3 +1,4 @@
+aiosqlite
 asyncio
 discord.py
 mcstatus
