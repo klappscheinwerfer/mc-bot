@@ -1,6 +1,6 @@
 # Changelog
 
-### Version 0.3.0 (TBA)
+### Version 0.3.0 (2023-11-19)
 
 * Added database
 * Added commands for changing settings
