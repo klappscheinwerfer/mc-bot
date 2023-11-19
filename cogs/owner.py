@@ -22,7 +22,7 @@ class Owner(commands.Cog, name="owner"):
 			await context.bot.tree.sync()
 			embed = discord.Embed(
 				description="Slash commands have been globally synchronized",
-				color=await db.get_setting("embed-color"),
+				color=discord.Color.from_str(await db.get_setting("embed-color")),
 			)
 			await context.send(embed=embed)
 			return
@@ -81,7 +81,7 @@ class Owner(commands.Cog, name="owner"):
 	async def set_cmd(self, context: Context, key: str, value: str) -> None:
 		await db.set_setting(key, value)
 		embed = discord.Embed(
-			description="test",
+			description=f"{key}:{value}",
 			color=discord.Color.from_str(await db.get_setting("embed-color")),
 		)
 		await context.send(embed=embed)
