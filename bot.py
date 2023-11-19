@@ -6,6 +6,7 @@ import sys
 
 from discord.ext import commands, tasks
 from discord.ext.commands import Bot, Context
+from utils import dbmanager
 
 if not os.path.isfile(f"{os.path.realpath(os.path.dirname(__file__))}/config.json"):
 	sys.exit("'config.json' not found")
@@ -45,5 +46,6 @@ async def load_cogs() -> None:
 				print(e)
 
 
+asyncio.run(dbmanager.init_db())
 asyncio.run(load_cogs())
 bot.run(bot.config["token"])

@@ -1,5 +1,11 @@
 # Changelog
 
+### Version 0.3.0 (2023-11-19)
+
+* Added database
+* Added commands for changing settings
+* Added customizable embed colors
+
 ### Version 0.2.2 (2023-09-01)
 
 * Fixed start command not responding due to a timeout
