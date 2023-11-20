@@ -4,6 +4,7 @@ from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import Context
 
+from utils import checks
 from utils import dbmanager as db
 
 
@@ -15,6 +16,7 @@ class General(commands.Cog, name="general"):
 		name = "help",
 		description = "List all commands the bot has loaded"
 	)
+	@checks.can_execute(command="help", default=True)
 	async def help_cmd(self, context: Context) -> None:
 		embed = discord.Embed(
 			title="mcbot", description="List of available commands:",
@@ -39,6 +41,7 @@ class General(commands.Cog, name="general"):
 		name = "info",
 		description = "Show information about the bot"
 	)
+	@checks.can_execute(command="info", default=True)
 	async def info_cmd(self, context: Context) -> None:
 		embed = discord.Embed(
 			title="mcbot",

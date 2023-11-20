@@ -105,5 +105,35 @@ class Owner(commands.Cog, name="owner"):
 			)
 		await context.send(embed=embed)
 
+	@commands.hybrid_command(
+		name="permission",
+		description="Change role permissions to execute a command.",
+	)
+	@app_commands.describe(command="Command", role="Role", value="True or false")
+	@commands.is_owner()
+	async def permission_cmd(self, context: Context, command: str, role: discord.Role, value: bool) -> None:
+		await db.set_permission(command, role.id, value)
+		embed = discord.Embed(
+			description=f"{command} {role.name} {value}",
+			color=discord.Color.from_str(await db.get_setting("embed-color")),
+		)
+		await context.send(embed=embed)
+
+	@commands.hybrid_command(
+		name="cmdroles",
+		description="List all roles that can access a command.",
+	)
+	@commands.is_owner()
+	async def cmdroles_cmd(self, context: Context, command:str) -> None:
+		role_list: str = ""
+		for roles in await db.list_allowed_roles(command=command):
+			role_list += context.guild.get_role(roles[1]).name + "\n"
+		embed = discord.Embed(
+			title=f"List roles that can use /{command}",
+			description=role_list,
+			color=discord.Color.from_str(await db.get_setting("embed-color")),
+		)
+		await context.send(embed=embed)
+
 async def setup(bot):
 	await bot.add_cog(Owner(bot))

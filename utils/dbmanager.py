@@ -62,3 +62,35 @@ async def list_settings() -> list:
 		) as cursor:
 			result = await cursor.fetchall()
 			return result
+
+
+async def set_permission(command:str, role: int, value: bool) -> None:
+	async with aiosqlite.connect(DATABASE_PATH) as db:
+		async with db.execute(
+			"SELECT * FROM permission WHERE permission_command=? AND permission_role=?",
+			(command, role,)
+		) as cursor:
+			if await cursor.fetchone() == None:
+				# Permission does not exist
+				await db.execute(
+					"INSERT INTO permission(permission_command, permission_role, permission_value) VALUES (?, ?, ?)",
+					(command, role, value,)
+				)
+			else:
+				# Permission already exists, update
+				await db.execute(
+					"UPDATE permission SET permission_value=? WHERE permission_command=? AND permission_role=?",
+					(value, command, role,)
+				)
+		await db.commit()
+		return
+
+
+async def list_allowed_roles(command: str) -> list:
+	async with aiosqlite.connect(DATABASE_PATH) as db:
+		async with db.execute(
+			"SELECT * FROM permission WHERE permission_command=? AND permission_value=true",
+			(command,)
+		) as cursor:
+			result = await cursor.fetchall()
+			return result

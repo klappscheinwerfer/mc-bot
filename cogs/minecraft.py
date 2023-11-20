@@ -7,6 +7,8 @@ from discord.ext import commands, tasks
 from discord.ext.commands import Context
 from mcstatus import JavaServer
 
+from utils import checks
+
 
 class Minecraft(commands.Cog, name="minecraft"):
 	def __init__(self, bot):
@@ -44,6 +46,7 @@ class Minecraft(commands.Cog, name="minecraft"):
 		name="status",
 		description="Check if the server is online",
 	)
+	@checks.can_execute(command="status", default=True)
 	async def status_cmd(self, context: Context):
 		await context.interaction.response.defer()
 		if(await self.status_check()):
@@ -55,6 +58,7 @@ class Minecraft(commands.Cog, name="minecraft"):
 		name="start",
 		description="Start the server",
 	)
+	@checks.can_execute(command="start", default=True)
 	async def start_cmd(self, context: Context):
 		await context.interaction.response.defer()
 		if(await self.status_check()):
