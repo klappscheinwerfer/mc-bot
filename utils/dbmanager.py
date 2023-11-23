@@ -86,10 +86,10 @@ async def set_permission(command:str, role: int, value: bool) -> None:
 		return
 
 
-async def list_allowed_roles(command: str) -> list:
+async def list_roles(command: str) -> list:
 	async with aiosqlite.connect(DATABASE_PATH) as db:
 		async with db.execute(
-			"SELECT * FROM permission WHERE permission_command=? AND permission_value=true",
+			"SELECT * FROM permission WHERE permission_command=?",
 			(command,)
 		) as cursor:
 			result = await cursor.fetchall()

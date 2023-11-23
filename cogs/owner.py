@@ -126,8 +126,9 @@ class Owner(commands.Cog, name="owner"):
 	@commands.is_owner()
 	async def cmdroles_cmd(self, context: Context, command:str) -> None:
 		role_list: str = ""
-		for roles in await db.list_allowed_roles(command=command):
-			role_list += context.guild.get_role(roles[1]).name + "\n"
+		for roles in await db.list_roles(command=command):
+			if roles[2] == True:
+				role_list += context.guild.get_role(roles[1]).name + "\n"
 		embed = discord.Embed(
 			title=f"List roles that can use /{command}",
 			description=role_list,

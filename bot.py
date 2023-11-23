@@ -6,7 +6,8 @@ import sys
 
 from discord.ext import commands, tasks
 from discord.ext.commands import Bot, Context
-from utils import dbmanager
+
+from utils import dbmanager as db
 
 if not os.path.isfile(f"{os.path.realpath(os.path.dirname(__file__))}/config.json"):
 	sys.exit("'config.json' not found")
@@ -35,6 +36,18 @@ async def on_ready() -> None:
 	print("Ready!")
 
 
+@bot.event
+async def on_command_error(context: Context, error) -> None:
+	if isinstance(error, commands.errors.CheckFailure):
+		embed = discord.Embed(
+			description="You don't have the required role(s) to execute this command.",
+			color=discord.Color.from_str(await db.get_setting("embed-error-color")),
+		)
+		await context.send(embed=embed)
+	else:
+		raise error
+
+
 async def load_cogs() -> None:
 	for file in os.listdir(f"{os.path.realpath(os.path.dirname(__file__))}/cogs"):
 		if file.endswith(".py"):
@@ -46,6 +59,6 @@ async def load_cogs() -> None:
 				print(e)
 
 
-asyncio.run(dbmanager.init_db())
+asyncio.run(db.init_db())
 asyncio.run(load_cogs())
 bot.run(bot.config["token"])

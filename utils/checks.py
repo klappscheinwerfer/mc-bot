@@ -12,11 +12,15 @@ def can_execute(command: str, default: bool = False) -> Callable[[T], T]:
 	This is a custom check to see if a user can execute a command.
 	"""
 	async def predicate(context: commands.Context) -> bool:
-		allowed_roles: list = await db.list_allowed_roles(command)
-		author_roles = context.author.roles
-		for r1 in allowed_roles:
-			for r2 in author_roles:
-				if r1 == r2: return True
+		if commands.is_owner(): # Owners bypass role checks
+			return True
+		allowed_roles: list = await db.list_roles(command)
+		# Ensure the roles are sorted by position
+		author_roles = list(sorted(context.author.roles, key=lambda role: role.position, reverse=True))
+		for r1 in author_roles:
+			for r2 in allowed_roles:
+				if r1.id == r2[1]:
+					return r2[2]
 		# Role not found, return default value
 		return default
 
